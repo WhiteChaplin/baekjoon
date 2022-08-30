@@ -61,3 +61,41 @@ for row in range(a-7): #만약 row가 10이라면 총 반복은 8 9 10. 총 3번
 print(min)
  
 
+
+#내가 맨 처음에 짠 코드. 64개를 기준으로 잡는다.
+chess_color1 = "WBWBWBWBBWBWBWBWWBWBWBWBBWBWBWBWWBWBWBWBBWBWBWBWWBWBWBWBBWBWBWBW"
+chess_color2 = "BWBWBWBWWBWBWBWBBWBWBWBWWBWBWBWBBWBWBWBWWBWBWBWBBWBWBWBWWBWBWBWB"
+a,b = map(int,input().split())
+
+chess_state = []
+for i in range(a):
+    chess_state.append(input())
+
+#chess_state = list(chess_state.split(" ")) #입력한 체스판을 공백을 기준으로 나눔
+min = 64
+count_color1 = 0
+count_color2 = 0
+
+
+for row in range(a-7): #만약 row가 10이라면 총 반복은 8 9 10. 총 3번을 해야하기 때문에 7을 빼준다.
+    for column in range(b-7): #만약 row가 11이라면 총 반복은 8 9 10 11. 총 4번을 해야하기 때문에 7을 빼준다
+        select_pos = "" #chess_color와 비교하는 문자열. 기존 배열을 슬라이싱해서 넣음
+        count_color1 = 0
+        count_color2 = 0
+
+        #여기서부터는 자른 배열을 담고 입력된 배열과 비교하는 코드 8 x 8로 자를 것임
+        for inner_row in chess_state[row:row+8]: #입력 받은 체스판에서 자를 부분의 열을 지정함
+            select_pos += inner_row[column:column+8] #select_pos에 현재 자를 부분의 열의 행을 넣음
+            if len(select_pos) == 64: #chess_color1과 2가 16개이고 체스판 색칠 규칙이 2줄(16개)의 색 순서이기 때문에 16개씩 비교
+                for i in range(64):
+                    if select_pos[i] != chess_color1[i]:
+                        count_color1 += 1
+                    elif select_pos[i] != chess_color2[i]:
+                        count_color2 += 1
+
+        if count_color1 <= count_color2 and count_color1 < min :
+            min = count_color1
+        elif count_color2 < count_color1 and count_color2 < min :
+            min = count_color2
+
+print(min)
